@@ -1,0 +1,2 @@
+/Users/youssefelhindaz/Documents/Toegepaste ICT/SEM-2/vr-experience/examen/eindopdracht/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/CMakeLists.txt
+/Users/youssefelhindaz/Documents/Toegepaste ICT/SEM-2/vr-experience/examen/eindopdracht/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/src/main/cpp/GameActivity/CMakeLists.txt
