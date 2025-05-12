@@ -1,8 +1,9 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class MenuManager : MonoBehaviour
 {
@@ -25,16 +26,23 @@ public class MenuManager : MonoBehaviour
             return;
         }
 
-        var interactable = button.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
-        if (interactable != null)
+        var interactable = button.GetComponent<XRSimpleInteractable>();
+        var pokeAffordance = button.GetComponent<XRPokeFollowAffordance>();
+        if (interactable != null && pokeAffordance != null)
         {
+            if (pokeAffordance.pokeFollowTransform == null)
+            {
+                Debug.LogError($"Poke Follow Transform missing on {button.name}! Assign a transform in XR Poke Follow Affordance.");
+                pokeAffordance.enabled = false; // Ensure it’s disabled if not fixed
+                return;
+            }
             interactable.hoverEntered.AddListener((args) => OnButtonHovered(button));
             interactable.selectEntered.AddListener((args) => OnButtonClicked(button));
-            Debug.Log($"SetupButton: {button.name} has XR Simple Interactable");
+            Debug.Log($"SetupButton: {button.name} with XR Simple Interactable and XR Poke Follow Affordance, Manager: {interactable.interactionManager}");
         }
         else
         {
-            Debug.LogError($"SetupButton: {button.name} is missing XR Simple Interactable!");
+            Debug.LogError($"SetupButton: {button.name} is missing XR Simple Interactable or XR Poke Follow Affordance!");
         }
     }
 
@@ -50,7 +58,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnButtonClicked(Button button)
     {
-        Debug.Log($"Click detected on: {button.name}");
+        Debug.Log($"Click detected on: {button.name} via Poke Interaction");
         AudioSource audioSource = button.GetComponent<AudioSource>();
         if (audioSource != null && clickSound != null)
         {
