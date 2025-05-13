@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class MenuManager : MonoBehaviour
 {
@@ -11,59 +8,17 @@ public class MenuManager : MonoBehaviour
     public Button quitButton;
     public AudioClip clickSound;
     public AudioClip hoverSound;
+    private AudioSource audioSource;
 
-    void Start()
+    private void Awake()
     {
-        SetupButton(startButton);
-        SetupButton(quitButton);
+        audioSource = GetComponent<AudioSource>();
     }
 
-    private void SetupButton(Button button)
+    public void OnButtonClick(Button button)
     {
-        if (button == null)
-        {
-            Debug.LogError("Button is not assigned in MenuManager!");
-            return;
-        }
-
-        var interactable = button.GetComponent<XRSimpleInteractable>();
-        var pokeAffordance = button.GetComponent<XRPokeFollowAffordance>();
-        if (interactable != null && pokeAffordance != null)
-        {
-            if (pokeAffordance.pokeFollowTransform == null)
-            {
-                Debug.LogError($"Poke Follow Transform missing on {button.name}! Assign a transform in XR Poke Follow Affordance.");
-                pokeAffordance.enabled = false; // Ensure it’s disabled if not fixed
-                return;
-            }
-            interactable.hoverEntered.AddListener((args) => OnButtonHovered(button));
-            interactable.selectEntered.AddListener((args) => OnButtonClicked(button));
-            Debug.Log($"SetupButton: {button.name} with XR Simple Interactable and XR Poke Follow Affordance, Manager: {interactable.interactionManager}");
-        }
-        else
-        {
-            Debug.LogError($"SetupButton: {button.name} is missing XR Simple Interactable or XR Poke Follow Affordance!");
-        }
-    }
-
-    private void OnButtonHovered(Button button)
-    {
-        Debug.Log($"Hover detected on: {button.name}");
-        AudioSource audioSource = button.GetComponent<AudioSource>();
-        if (audioSource != null && hoverSound != null)
-        {
-            audioSource.PlayOneShot(hoverSound);
-        }
-    }
-
-    private void OnButtonClicked(Button button)
-    {
-        Debug.Log($"Click detected on: {button.name} via Poke Interaction");
-        AudioSource audioSource = button.GetComponent<AudioSource>();
-        if (audioSource != null && clickSound != null)
-        {
-            audioSource.PlayOneShot(clickSound);
-        }
+        Debug.Log("Button clicked: " + button.name);
+        PlayClickSound();
 
         if (button == startButton)
         {
@@ -72,6 +27,36 @@ public class MenuManager : MonoBehaviour
         else if (button == quitButton)
         {
             Application.Quit();
+        }
+    }
+
+    public void OnButtonHover(Button button)
+    {
+        Debug.Log("Button hovered: " + button.name);
+        PlayHoverSound();
+    }
+
+    private void PlayClickSound()
+    {
+        if (audioSource != null && clickSound != null)
+        {
+            audioSource.PlayOneShot(clickSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or ClickSound not assigned");
+        }
+    }
+
+    private void PlayHoverSound()
+    {
+        if (audioSource != null && hoverSound != null)
+        {
+            audioSource.PlayOneShot(hoverSound);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource or HoverSound not assigned");
         }
     }
 }
