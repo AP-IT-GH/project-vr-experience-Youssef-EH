@@ -1,0 +1,65 @@
+{
+    "BallAgent": {
+        "checkpoints": [
+            {
+                "steps": 2199636,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2199636.onnx",
+                "reward": null,
+                "creation_time": 1747164127.738987,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-2199636.pt"
+                ]
+            },
+            {
+                "steps": 2299230,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2299230.onnx",
+                "reward": null,
+                "creation_time": 1747164322.2277267,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-2299230.pt"
+                ]
+            },
+            {
+                "steps": 2399488,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2399488.onnx",
+                "reward": null,
+                "creation_time": 1747164509.2439117,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-2399488.pt"
+                ]
+            },
+            {
+                "steps": 2499038,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2499038.onnx",
+                "reward": null,
+                "creation_time": 1747164696.994865,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-2499038.pt"
+                ]
+            },
+            {
+                "steps": 2586283,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2586283.onnx",
+                "reward": null,
+                "creation_time": 1747164853.826367,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-2586283.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2586283,
+            "file_path": "results\\BallAgent\\BallAgent.onnx",
+            "reward": null,
+            "creation_time": 1747164853.826367,
+            "auxillary_file_paths": [
+                "results\\BallAgent\\BallAgent\\BallAgent-2586283.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}
