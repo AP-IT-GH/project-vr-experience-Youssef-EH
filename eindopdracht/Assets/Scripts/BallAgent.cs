@@ -10,7 +10,7 @@ public class BallAgent : Agent
     public Transform aim;
     public Rigidbody rb;
 
-    public float rotationSpeed = 100f;
+    public float rotationSpeed = 50f;
     public float maxForce = 5f;
     public float minSpeed = 0.05f;
 
@@ -38,13 +38,9 @@ public class BallAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 toHole = holeTransform.position - transform.position;
         sensor.AddObservation(new Vector2(transform.forward.x, transform.forward.z));
-        sensor.AddObservation(toHole.normalized); //postitie hole
-        sensor.AddObservation(toHole.magnitude); //afstand hole
         sensor.AddObservation(rb.linearVelocity); //snelheid bal
         sensor.AddObservation(canShoot ? 1f : 0f);
-
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -53,9 +49,8 @@ public class BallAgent : Agent
         {
             EndEpisode();
         }
-
         if (rb.linearVelocity.magnitude > minSpeed)
-            return; 
+            return;
 
         float rotationInput = actions.ContinuousActions[0];
         float shootInput = actions.ContinuousActions[1];
@@ -67,17 +62,19 @@ public class BallAgent : Agent
         float currentDistance = Vector3.Distance(transform.position, holeTransform.position);
         float distanceDelta = previousDistance - currentDistance;
 
-        AddReward(distanceDelta * 0.1f);
+        //AddReward(distanceDelta * 0.1f);
+        //print(distanceDelta * 0.1f);
         previousDistance = currentDistance;
 
-        if (shootInput > 0.5f && canShoot)
+
+        if (canShoot)
         {
             float forceToApply = Mathf.Lerp(0f, maxForce, Mathf.Abs(shootInput));
 
             Vector3 shootDirection = new Vector3(aim.forward.x, 0f, aim.forward.z).normalized;
             rb.AddForce(shootDirection * forceToApply, ForceMode.Impulse);
-            AddReward(-0.01f); 
             canShoot = false;
+            AddReward(-0.01f);
         }
 
         if (rb.linearVelocity.magnitude < minSpeed)
