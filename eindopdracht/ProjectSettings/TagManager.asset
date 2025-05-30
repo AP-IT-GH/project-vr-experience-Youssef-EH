@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Wall
+  - Hole
   - GolfBall
   layers:
   - Default
