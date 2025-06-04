@@ -10,7 +10,7 @@ public class BallAgent : Agent
     public Transform aim;
     public Rigidbody rb;
 
-    public float rotationSpeed = 50f;
+    public float rotationSpeed = 70f;
     public float maxForce = 5f;
     public float minSpeed = 0.05f;
 
@@ -18,6 +18,8 @@ public class BallAgent : Agent
     private Vector3 startPosition;
     private Quaternion startRotation;
     private float previousDistance;
+
+    int shotsTaken = 0;
 
     public override void Initialize()
     {
@@ -28,8 +30,10 @@ public class BallAgent : Agent
 
     public override void OnEpisodeBegin()
     {
+        shotsTaken = 0;
+
         transform.position = startPosition;
-        transform.rotation = startRotation;
+        aim.rotation = startRotation;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         canShoot = true;
@@ -38,17 +42,29 @@ public class BallAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(new Vector2(transform.forward.x, transform.forward.z));
-        sensor.AddObservation(rb.linearVelocity); //snelheid bal
+        Vector3 toHole = holeTransform.position - transform.position;
+        Vector3 relativeToHole = aim.InverseTransformDirection(toHole.normalized);
+        float distanceToHole = Vector3.Distance(transform.position, holeTransform.position);
+
+        sensor.AddObservation(distanceToHole);
+        sensor.AddObservation(relativeToHole);
+        sensor.AddObservation(rb.linearVelocity);
         sensor.AddObservation(canShoot ? 1f : 0f);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
+        Vector3 toHole = (holeTransform.position - transform.position).normalized;
+        float alignment = Vector3.Dot(aim.forward, toHole);
+
+        //AddReward(alignment * 0.005f);
+
         if (transform.position.y < -5f)
         {
+            SetReward(-1f);
             EndEpisode();
         }
+
         if (rb.linearVelocity.magnitude > minSpeed)
             return;
 
@@ -56,25 +72,27 @@ public class BallAgent : Agent
         float shootInput = actions.ContinuousActions[1];
 
         aim.Rotate(Vector3.up, rotationInput * rotationSpeed * Time.deltaTime);
-        Vector3 currentEuler = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(0f, aim.eulerAngles.y, 0f);
 
         float currentDistance = Vector3.Distance(transform.position, holeTransform.position);
         float distanceDelta = previousDistance - currentDistance;
-
-        //AddReward(distanceDelta * 0.1f);
-        //print(distanceDelta * 0.1f);
+        //if (alignment > 0.9f)
+        //    AddReward(0.01f);
         previousDistance = currentDistance;
 
-
-        if (canShoot)
+        if (canShoot && shootInput>0.2f)
         {
             float forceToApply = Mathf.Lerp(0f, maxForce, Mathf.Abs(shootInput));
 
-            Vector3 shootDirection = new Vector3(aim.forward.x, 0f, aim.forward.z).normalized;
-            rb.AddForce(shootDirection * forceToApply, ForceMode.Impulse);
+            if (alignment < 0.5f)
+                AddReward(-0.05f);
+
+            rb.AddForce(aim.forward.normalized * forceToApply, ForceMode.Impulse);
             canShoot = false;
             AddReward(-0.01f);
+
+            shotsTaken++;
+            print(shotsTaken);
         }
 
         if (rb.linearVelocity.magnitude < minSpeed)
@@ -82,13 +100,13 @@ public class BallAgent : Agent
             canShoot = true;
         }
 
-        float distance = Vector3.Distance(transform.position, holeTransform.position);
-        if (distance < 0.1f)
+        if (currentDistance < 0.1f)
         {
-            SetReward(1f); 
+            SetReward(1f);
             EndEpisode();
         }
     }
+
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -96,10 +114,11 @@ public class BallAgent : Agent
         continuous[0] = Input.GetAxis("Horizontal"); 
         continuous[1] = Input.GetKey(KeyCode.Space) ? 1f : 0f; 
     }
-
     public void LateUpdate()
     {
-        Vector3 flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
+        aim.position = transform.position;
+
+        Vector3 flatForward = new Vector3(aim.forward.x, 0f, aim.forward.z).normalized;
         if (flatForward != Vector3.zero)
         {
             aim.rotation = Quaternion.LookRotation(flatForward, Vector3.up);
