@@ -2,6 +2,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BallAgent : Agent
 {
@@ -9,13 +10,14 @@ public class BallAgent : Agent
     public Transform aim;
     public Rigidbody rb;
 
-    public float rotationSpeed = 100f;
+    public float rotationSpeed = 50f;
     public float maxForce = 5f;
     public float minSpeed = 0.05f;
 
     private bool canShoot = true;
     private Vector3 startPosition;
     private Quaternion startRotation;
+    private float previousDistance;
 
     public override void Initialize()
     {
@@ -31,25 +33,24 @@ public class BallAgent : Agent
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         canShoot = true;
+        previousDistance = Vector3.Distance(transform.position, holeTransform.position);
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.forward); //positie bal
-        sensor.AddObservation(holeTransform.position); //positie hole
-        sensor.AddObservation(rb.linearVelocity.magnitude); //snelheid
+        sensor.AddObservation(new Vector2(transform.forward.x, transform.forward.z));
+        sensor.AddObservation(rb.linearVelocity); //snelheid bal
+        sensor.AddObservation(canShoot ? 1f : 0f);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         if (transform.position.y < -5f)
         {
-            SetReward(-1.0f);
             EndEpisode();
         }
-
         if (rb.linearVelocity.magnitude > minSpeed)
-            return; 
+            return;
 
         float rotationInput = actions.ContinuousActions[0];
         float shootInput = actions.ContinuousActions[1];
@@ -58,12 +59,22 @@ public class BallAgent : Agent
         Vector3 currentEuler = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(0f, aim.eulerAngles.y, 0f);
 
-        if (shootInput > 0.5f && canShoot)
+        float currentDistance = Vector3.Distance(transform.position, holeTransform.position);
+        float distanceDelta = previousDistance - currentDistance;
+
+        //AddReward(distanceDelta * 0.1f);
+        //print(distanceDelta * 0.1f);
+        previousDistance = currentDistance;
+
+
+        if (canShoot)
         {
+            float forceToApply = Mathf.Lerp(0f, maxForce, Mathf.Abs(shootInput));
+
             Vector3 shootDirection = new Vector3(aim.forward.x, 0f, aim.forward.z).normalized;
-            rb.AddForce(shootDirection * maxForce, ForceMode.Impulse);
-            AddReward(-0.01f); 
+            rb.AddForce(shootDirection * forceToApply, ForceMode.Impulse);
             canShoot = false;
+            AddReward(-0.01f);
         }
 
         if (rb.linearVelocity.magnitude < minSpeed)
