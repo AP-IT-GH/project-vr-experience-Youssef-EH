@@ -2,26 +2,28 @@ using UnityEngine;
 
 public class FacePlayer : MonoBehaviour
 {
-    public Transform playerCamera;
-    private Vector3 _lookAtPosition;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Transform playerCamera; // XR Rig Main Camera
+    public float distance = 1.0f; // Distance in front of the camera
+    public float yOffset = 0.0f; // Extra height offset if needed
 
-    // Update is called once per frame
     void Update()
     {
-        if (playerCamera)
-        {
-            // Setting the lookAtPosition to the player's position but keeping the y-coordinate of the object
-            _lookAtPosition = new Vector3(playerCamera.position.x, transform.position.y, playerCamera.position.z);
-            // Setting the rotation of the object to look at the player's position
-            transform.LookAt(_lookAtPosition);
-            // Inverting the rotation to face the player
-            transform.forward = -transform.forward;
-        }
+        if (!playerCamera) return;
+
+        // Project camera forward onto XZ plane (ignore head tilt)
+        var forward = playerCamera.forward;
+        forward.y = 0;
+        forward.Normalize();
+
+        // Position in front of camera at eye height (+ optional offset)
+        var targetPos = playerCamera.position + forward * distance;
+        targetPos.y = playerCamera.position.y + yOffset;
+        transform.position = targetPos;
+
+        // Only rotate around Y (yaw)
+        var lookPos = playerCamera.position;
+        lookPos.y = transform.position.y; // keep upright
+        transform.LookAt(lookPos);
+        transform.Rotate(0, 180, 0); // Face the player, not away
     }
 }
