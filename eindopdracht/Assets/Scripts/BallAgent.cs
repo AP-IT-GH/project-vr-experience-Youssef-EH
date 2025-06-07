@@ -11,7 +11,7 @@ public class BallAgent : Agent
     public Rigidbody rb;
 
     public float rotationSpeed = 70f;
-    public float maxForce = 5f;
+    public float maxForce = 8f;
     public float minSpeed = 0.05f;
 
     private bool canShoot = true;
@@ -36,6 +36,7 @@ public class BallAgent : Agent
         aim.rotation = startRotation;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        rb.Sleep();
         canShoot = true;
         previousDistance = Vector3.Distance(transform.position, holeTransform.position);
     }
@@ -57,9 +58,14 @@ public class BallAgent : Agent
         Vector3 toHole = (holeTransform.position - transform.position).normalized;
         float alignment = Vector3.Dot(aim.forward, toHole);
 
-        //AddReward(alignment * 0.005f);
+        AddReward(-0.001f);
 
         if (transform.position.y < -5f)
+        {
+            SetReward(-1f);
+            EndEpisode();
+        }
+        if(shotsTaken>100)
         {
             SetReward(-1f);
             EndEpisode();
@@ -84,8 +90,8 @@ public class BallAgent : Agent
         {
             float forceToApply = Mathf.Lerp(0f, maxForce, Mathf.Abs(shootInput));
 
-            if (alignment < 0.5f)
-                AddReward(-0.05f);
+            //if (alignment < 0.5f)
+            //    AddReward(-0.05f);
 
             rb.AddForce(aim.forward.normalized * forceToApply, ForceMode.Impulse);
             canShoot = false;

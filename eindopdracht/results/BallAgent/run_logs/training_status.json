@@ -2,31 +2,58 @@
     "BallAgent": {
         "checkpoints": [
             {
-                "steps": 499980,
-                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-499980.onnx",
-                "reward": 0.9309091026132758,
-                "creation_time": 1749062476.5883236,
+                "steps": 2499962,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2499962.onnx",
+                "reward": -0.9447945376781568,
+                "creation_time": 1749302010.32555,
                 "auxillary_file_paths": [
-                    "results\\BallAgent\\BallAgent\\BallAgent-499980.pt"
+                    "results\\BallAgent\\BallAgent\\BallAgent-2499962.pt"
                 ]
             },
             {
-                "steps": 692100,
-                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-692100.onnx",
-                "reward": 0.9234706002123215,
-                "creation_time": 1749062938.112055,
+                "steps": 2999866,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-2999866.onnx",
+                "reward": -1.7440698205731635,
+                "creation_time": 1749302980.6117396,
                 "auxillary_file_paths": [
-                    "results\\BallAgent\\BallAgent\\BallAgent-692100.pt"
+                    "results\\BallAgent\\BallAgent\\BallAgent-2999866.pt"
+                ]
+            },
+            {
+                "steps": 3499834,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-3499834.onnx",
+                "reward": -1.645789478954516,
+                "creation_time": 1749303981.1801739,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-3499834.pt"
+                ]
+            },
+            {
+                "steps": 3999931,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-3999931.onnx",
+                "reward": -1.2612000226974487,
+                "creation_time": 1749304976.6408672,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-3999931.pt"
+                ]
+            },
+            {
+                "steps": 4290924,
+                "file_path": "results\\BallAgent\\BallAgent\\BallAgent-4290924.onnx",
+                "reward": -1.1529166748126347,
+                "creation_time": 1749305564.4600105,
+                "auxillary_file_paths": [
+                    "results\\BallAgent\\BallAgent\\BallAgent-4290924.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 692100,
+            "steps": 4290924,
             "file_path": "results\\BallAgent\\BallAgent.onnx",
-            "reward": 0.9234706002123215,
-            "creation_time": 1749062938.112055,
+            "reward": -1.1529166748126347,
+            "creation_time": 1749305564.4600105,
             "auxillary_file_paths": [
-                "results\\BallAgent\\BallAgent\\BallAgent-692100.pt"
+                "results\\BallAgent\\BallAgent\\BallAgent-4290924.pt"
             ]
         }
     },
