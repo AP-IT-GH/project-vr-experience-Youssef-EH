@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.MLAgents.Policies;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameLoopManager : MonoBehaviour
@@ -19,6 +21,22 @@ public class GameLoopManager : MonoBehaviour
     void Start()
     {
         SetBallsState(1);
+        GameObject agentBall = enemyBalls[levelNr - 1];
+        StartCoroutine(PrewarmAgent());
+    }
+    //dit is van chatgpt, da laat de agent starten en deftig resetten. als je die direct aan en uit zet zit die vast in die episode ofzo
+    private IEnumerator PrewarmAgent()
+    {
+        yield return null;
+        GameObject agentBall = enemyBalls[levelNr - 1];
+        var behaviorParams = agentBall.GetComponent<BehaviorParameters>();
+        if (behaviorParams.Model != null)
+        {
+            behaviorParams.BehaviorType = BehaviorType.InferenceOnly;
+        }
+        agentBall.SetActive(true);
+        yield return null;
+        agentBall.SetActive(false);
     }
 
     void SetBallsState(int level)
