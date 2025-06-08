@@ -758,9 +758,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676080777}
+      - m_Target: {fileID: 11500000, guid: 39ddb84a9ed8ae1459243c522a832fee, type: 3}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OnButtonClick
+        m_MethodName: 
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 720001382}
@@ -2397,7 +2397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1676080778}
-  - component: {fileID: 1676080777}
+  - component: {fileID: 1676080779}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -2405,23 +2405,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1676080777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676080776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ddc359005a344e72862efac20a00598, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startButton: {fileID: 720001382}
-  quitButton: {fileID: 1725281587}
-  clickSound: {fileID: 8300000, guid: 0732286df5fa44f70b18af4de7659588, type: 3}
-  hoverSound: {fileID: 8300000, guid: d4074f197071f495a940e2fbff22c6d2, type: 3}
-  sceneFader: {fileID: 1739766468}
 --- !u!4 &1676080778
 Transform:
   m_ObjectHideFlags: 0
@@ -2437,6 +2420,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1676080779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676080776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ddb84a9ed8ae1459243c522a832fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startButton: {fileID: 720001382}
+  quitButton: {fileID: 1725281587}
+  clickSound: {fileID: 8300000, guid: c57fb0a3fd8d04f1c8889a55aff389d4, type: 3}
+  hoverSound: {fileID: 8300000, guid: a3b8118b9a56048819854eb01d631986, type: 3}
+  sceneFader: {fileID: 1739766468}
 --- !u!1 &1719390324
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,7 +2631,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676080777}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 2
