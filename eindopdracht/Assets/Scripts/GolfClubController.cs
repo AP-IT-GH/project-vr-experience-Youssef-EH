@@ -9,7 +9,9 @@ public class GolfClubController : MonoBehaviour
     private Rigidbody clubRigidbody;
     private Vector3 previousPosition;
     private Vector3 velocity;
-    
+
+    public GameLoopManager gameLoopManager;
+
     private void Start()
     {
         clubRigidbody = GetComponent<Rigidbody>();
@@ -25,9 +27,15 @@ public class GolfClubController : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision)
     {
+        bool inHit = false;
+
         // Check if we're hitting a golf ball
         if (collision.gameObject.CompareTag("GolfBall"))
         {
+            if (!inHit) gameLoopManager.hitBall();
+
+            inHit = true;
+
             // Calculate hit force based on velocity
             float hitMagnitude = velocity.magnitude;
             
@@ -43,6 +51,6 @@ public class GolfClubController : MonoBehaviour
                 
                 // Optionally add some audio feedback here
             }
-        }
+        } else inHit = false;
     }
 }
