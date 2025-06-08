@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
     public Button quitButton;
     public AudioClip clickSound;
     public AudioClip hoverSound;
+    public SceneFader sceneFader; // (the SceneFader on FadePanel)
     private AudioSource audioSource;
 
     private void Awake()
@@ -15,6 +16,7 @@ public class MenuManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    // This function is called by the button OnClick events
     public void OnButtonClick(Button button)
     {
         Debug.Log("Button clicked: " + button.name);
@@ -22,7 +24,11 @@ public class MenuManager : MonoBehaviour
 
         if (button == startButton)
         {
-            SceneManager.LoadScene("MiniGolfScene");
+            // Use fade transition instead of instant scene change
+            if (sceneFader != null)
+                sceneFader.FadeAndLoadScene("MiniGolfScene");
+            else
+                SceneManager.LoadScene("MiniGolfScene");
         }
         else if (button == quitButton)
         {
@@ -30,6 +36,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    // This function can be wired to Button OnPointerEnter events for hover SFX
     public void OnButtonHover(Button button)
     {
         Debug.Log("Button hovered: " + button.name);
