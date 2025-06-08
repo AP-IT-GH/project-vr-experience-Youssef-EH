@@ -108,3 +108,11 @@ We merken dat het moeilijk is om de agent te trainen om golfparkours af te legge
 
 ## Bronnen
 
+- Unity Technologies. (z.d.). *ML-Agents Toolkit Documentation*. Geraadpleegd op 8 juni 2025, van https://github.com/Unity-Technologies/ml-agents  
+- Unity Technologies. (z.d.). *XR Interaction Toolkit Documentation*. Geraadpleegd op 8 juni 2025, van https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.4/manual/index.html  
+- Kenney. (z.d.). *Minigolf Kit*. Geraadpleegd op 8 juni 2025, van https://kenney.nl/assets/minigolf-kit  
+- OpenAI. (2025). *ChatGPT (GPT-4), versie juni 2025*. Geraadpleegd via https://chat.openai.com  
+- GitHub. (2025). *GitHub Copilot*. Geraadpleegd via https://github.com/features/copilot    
+- StockTune. (z.d.). *Putt Putt Golf Ball [audio clip]*. Geraadpleegd op 8 juni 2025, van https://stocktune.com/free-music/putt-putt-golf-ball-155554-13793?signup=true  
+- Jeniak, A. (2021). *Fatality – FPS Gaming Font*. Unity Asset Store. Geraadpleegd op 8 juni 2025, van https://assetstore.unity.com/packages/2d/fonts/fatality-fps-gaming-font-216954  
+- NatureManufacture. (2020). *Low Poly Simple Nature Pack*. Unity Asset Store. Geraadpleegd op 8 juni 2025, van https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-simple-nature-pack-162153 
