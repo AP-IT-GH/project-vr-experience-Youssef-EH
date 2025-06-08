@@ -20,7 +20,6 @@ public class BallAgent : Agent
     private float previousDistance;
 
     int shotsTaken = 0;
-    public GameLoopManager gameLoopManager;
 
     public override void Initialize()
     {
@@ -66,10 +65,8 @@ public class BallAgent : Agent
             SetReward(-1f);
             EndEpisode();
         }
-        if (shotsTaken > 10)
+        if (shotsTaken > 20)
         {
-            gameLoopManager.AddEnemyScore(12);
-
             SetReward(-1f);
             EndEpisode();
         }
@@ -110,8 +107,6 @@ public class BallAgent : Agent
 
         if (currentDistance < 0.1f)
         {
-            gameLoopManager.AddEnemyScore(shotsTaken);
-
             SetReward(1f);
             EndEpisode();
         }
