@@ -27,16 +27,6 @@ public class LeaderboardUI : MonoBehaviour
 
     void Start()
     {
-        // Example leaderboard data for debug/demo
-        int[] you = { 3, 4, 2, 5, 10, 7 };
-        int[] opponent = { 4, 5, 3, 10, 8, 6 };
-        ShowLeaderboard(you, opponent);
-
-        // Show/hide the end screen for demo
-        if (debugShowEndScreen)
-            ShowEndResult(debugWin);
-        else
-            HideEndResult();
     }
 
     public void ShowLeaderboard(int[] you, int[] opponent)

@@ -13,8 +13,8 @@ public class GolfClubSwingHelper : MonoBehaviour
     public KeyCode swingKey = KeyCode.F;
     public KeyCode cancelKey = KeyCode.Space;
     public float minForce = 1f;           // Lower tap force
-    public float maxForce = 25f;
-    public float holdTimeToMax = 2f;      // How long (seconds) to reach full power
+    public float maxForce = 15f;
+    public float holdTimeToMax = 10f;      // How long (seconds) to reach full power
     public float hitZoneRadius = 1.2f;    // Distance from club to ball to allow hitting
 
     [Header("Ball Respawn")]
@@ -26,6 +26,8 @@ public class GolfClubSwingHelper : MonoBehaviour
     private Vector3 lastBallValidPos;
     private Rigidbody golfBall;
     private bool isInZone = false;
+
+    public GameLoopManager gameLoopManager;
 
     void Start()
     {
@@ -139,6 +141,8 @@ public class GolfClubSwingHelper : MonoBehaviour
             }
             if (Input.GetKeyUp(swingKey))
             {
+                gameLoopManager.hitBall();
+
                 float charge = Mathf.Clamp01(holdTimer / holdTimeToMax);
                 float force = Mathf.Lerp(minForce, maxForce, charge);
                 TryHitBall(golfBall, force);
