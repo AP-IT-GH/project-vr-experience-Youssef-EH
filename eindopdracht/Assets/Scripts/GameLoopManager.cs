@@ -13,15 +13,12 @@ public class GameLoopManager : MonoBehaviour
 
     int[] you = { 0, 0, 0, 0, 0, 0 };
     int[] opponent = { 0, 0, 0, 0, 0, 0 };
+    
+    private bool enemyTurnEnded = false;
 
     void Start()
     {
         SetBallsState(1);
-    }
-
-    void Update()
-    {
-
     }
 
     void SetBallsState(int level)
@@ -35,25 +32,57 @@ public class GameLoopManager : MonoBehaviour
 
     public void BallEnteredHole()
     {
+        // Haal de ball van de course
+        balls[levelNr - 1].SetActive(false);
+    
         StartCoroutine(EnemyTurn());
     }
 
     private IEnumerator EnemyTurn()
     {
+        enemyTurnEnded = false;
         GameObject agentBall = enemyBalls[levelNr - 1];
         agentBall.SetActive(true);
 
         BallAgent agent = agentBall.GetComponent<BallAgent>();
+        agent.HasScored = false;
+        agent.EpisodeRunning = true;
+        agent.shotsTaken = 0;
+        agent.lastEpisodeScored = false; // <-- Reset before turn
+        agent.lastEpisodeShots = 0;
 
-        while (agentBall.activeInHierarchy && agent.StepCount != 0)
+        Rigidbody agentRb = agentBall.GetComponent<Rigidbody>();
+
+        yield return null;
+
+        agent.RequestDecision();
+        Debug.Log("Agent started playing");
+
+        // Wait for the agent to finish
+        while (agent.EpisodeRunning)
         {
-            yield return null; 
+            yield return null;
         }
 
-        agentBall.SetActive(true); // Dit op false = agent wel werken
+        // Use lastEpisodeScored and lastEpisodeShots for result
+        if (agent.lastEpisodeScored)
+        {
+            Debug.Log("Agent scored in " + agent.lastEpisodeShots + " shots");
+            AddEnemyScore(Mathf.Max(1, agent.lastEpisodeShots));
+        }
+        else
+        {
+            Debug.Log("Agent failed to score, adding penalty");
+            AddEnemyScore(12);
+        }
 
-        if (levelNr == 6) leaderboardUI.ShowEndResult(WinOrLose());
-        else levelNr++;
+        yield return new WaitForSeconds(1f);
+        agentBall.SetActive(false);
+
+        if (levelNr == 6)
+            leaderboardUI.ShowEndResult(WinOrLose());
+        else
+            levelNr++;
 
         leaderboardUI.ShowLeaderboard(you, opponent);
         SetBallsState(levelNr);
@@ -62,7 +91,7 @@ public class GameLoopManager : MonoBehaviour
     public void hitBall()
     {
         you[levelNr - 1] = you[levelNr - 1] + 1;
-
+    
         if (you[levelNr - 1] == 10)
         {
             you[levelNr - 1] = 12;

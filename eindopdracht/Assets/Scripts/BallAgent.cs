@@ -13,17 +13,24 @@ public class BallAgent : Agent
     public float rotationSpeed = 70f;
     public float maxForce = 8f;
     public float minSpeed = 0.05f;
+    
+    public bool HasScored { get; set; }
+    public bool EpisodeRunning { get; set; }
+    public bool scoredThisEpisode { get; set; }
+    public bool lastEpisodeScored = false;
+    public int lastEpisodeShots = 0;
 
     private bool canShoot = true;
     private Vector3 startPosition;
     private Quaternion startRotation;
     private float previousDistance;
 
-    int shotsTaken = 0;
+    public int shotsTaken = 0;
     public GameLoopManager gameLoopManager;
 
     public override void Initialize()
     {
+        HasScored = false;
         rb = GetComponent<Rigidbody>();
         startPosition = transform.position;
         startRotation = transform.rotation;
@@ -31,6 +38,8 @@ public class BallAgent : Agent
 
     public override void OnEpisodeBegin()
     {
+        HasScored = false;
+        scoredThisEpisode = false;
         shotsTaken = 0;
 
         transform.position = startPosition;
@@ -40,6 +49,15 @@ public class BallAgent : Agent
         rb.Sleep();
         canShoot = true;
         previousDistance = Vector3.Distance(transform.position, holeTransform.position);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Hole"))
+        {
+            HasScored = true;
+            Debug.Log("Agent scored!");
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -64,13 +82,15 @@ public class BallAgent : Agent
         if (transform.position.y < -5f)
         {
             SetReward(-1f);
+            EpisodeRunning = false;
             EndEpisode();
         }
         if (shotsTaken > 10)
         {
-            gameLoopManager.AddEnemyScore(12);
-
+            lastEpisodeScored = false;
+            lastEpisodeShots = shotsTaken;
             SetReward(-1f);
+            EpisodeRunning = false;
             EndEpisode();
         }
         if (rb.linearVelocity.magnitude > minSpeed)
@@ -110,9 +130,12 @@ public class BallAgent : Agent
 
         if (currentDistance < 0.1f)
         {
-            gameLoopManager.AddEnemyScore(shotsTaken);
-
+            HasScored = true;
+            scoredThisEpisode = true;
+            lastEpisodeScored = true;
+            lastEpisodeShots = shotsTaken;
             SetReward(1f);
+            EpisodeRunning = false;
             EndEpisode();
         }
     }
