@@ -65,12 +65,11 @@ public class BallAgent : Agent
             SetReward(-1f);
             EndEpisode();
         }
-        if(shotsTaken>100)
+        if (shotsTaken > 20)
         {
             SetReward(-1f);
             EndEpisode();
         }
-
         if (rb.linearVelocity.magnitude > minSpeed)
             return;
 
