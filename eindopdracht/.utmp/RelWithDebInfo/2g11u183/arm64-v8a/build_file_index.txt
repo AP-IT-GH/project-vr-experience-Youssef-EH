@@ -1,0 +1,2 @@
+C:\Users\daand\Desktop\school\vr experience\tyet\project-vr-experience-Youssef-EH\eindopdracht\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\daand\Desktop\school\vr experience\tyet\project-vr-experience-Youssef-EH\eindopdracht\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

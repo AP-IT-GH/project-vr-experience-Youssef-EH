@@ -23,9 +23,9 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        SetBallsState(1);
         GameObject agentBall = enemyBalls[levelNr - 1];
         StartCoroutine(PrewarmAgent());
+        SetBallsState(1);
     }
 
     private void Update()
@@ -54,9 +54,11 @@ public class GameLoopManager : MonoBehaviour
         {
             behaviorParams.BehaviorType = BehaviorType.InferenceOnly;
         }
+        Vector3 pos = agentBall.transform.position;
         agentBall.SetActive(true);
         yield return null;
         agentBall.SetActive(false);
+        agentBall.transform.position = pos;
     }
 
     void SetBallsState(int level)
