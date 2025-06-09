@@ -11,6 +11,9 @@ public class GameLoopManager : MonoBehaviour
     public List<GameObject> enemyBalls;
     public LeaderboardUI leaderboardUI;
 
+    private List<Vector3> spawnPoints = new List<Vector3> { new Vector3(0, 0.1f, -2), new Vector3(0, 0.1f, 0), new Vector3(0, 0.1f, 0), new Vector3(0, 0.1f, 0), new Vector3(1, 0.1f, 0), new Vector3(0, 0.1f, 2) };
+
+
     private int levelNr = 1;
 
     int[] you = { 0, 0, 0, 0, 0, 0 };
@@ -24,7 +27,24 @@ public class GameLoopManager : MonoBehaviour
         GameObject agentBall = enemyBalls[levelNr - 1];
         StartCoroutine(PrewarmAgent());
     }
-    //dit is van chatgpt, da laat de agent starten en deftig resetten. als je die direct aan en uit zet zit die vast in die episode ofzo
+
+    private void Update()
+    {
+        if (balls[levelNr - 1].transform.position.y < 0.05 && balls[levelNr - 1].activeInHierarchy)
+        {
+            balls[levelNr - 1].GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            balls[levelNr - 1].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            balls[levelNr - 1].transform.localPosition = spawnPoints[levelNr - 1];
+        }
+
+        if (enemyBalls[levelNr - 1].transform.position.y < 0.05 && enemyBalls[levelNr - 1].activeInHierarchy)
+        {
+            enemyBalls[levelNr - 1].GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            enemyBalls[levelNr - 1].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            enemyBalls[levelNr - 1].transform.localPosition = spawnPoints[levelNr - 1];
+        }
+    }
+
     private IEnumerator PrewarmAgent()
     {
         yield return null;
